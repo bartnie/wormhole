@@ -332,7 +332,7 @@ kubectl apply -f echoserver.yaml
 We should now be able to access the service through the wormhole-connector proxy:
 
 ```
-$ curl --proxy https://connector.wormhole.io:8080 --proxy-cacert certs/ca.pem http://echoserver:8080
+$ curl --proxy http://connector.wormhole.io:8080 http://echoserver:8080
 CLIENT VALUES:
 client_address=172.17.0.13
 command=GET
@@ -355,7 +355,7 @@ BODY:
 We can also access any other server reachable from the Kubernetes cluster:
 
 ```
-$ curl --proxy https://connector.wormhole.io:8080 --proxy-cacert certs/ca.pem https://google.com
+$ curl --proxy http://connector.wormhole.io:8080 https://google.com
 <HTML><HEAD><meta http-equiv="content-type" content="text/html;charset=utf-8">
 <TITLE>301 Moved</TITLE></HEAD><BODY>
 <H1>301 Moved</H1>
