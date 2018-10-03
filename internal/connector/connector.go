@@ -503,7 +503,7 @@ func registerHandlers(mux *mux.Router, wc *WormholeConnector) {
 func (wc *WormholeConnector) ListenAndServeTLS(cert, key string) {
 	go func() {
 		wc.logger.Infof("listening for client requests on %s", wc.server.Addr)
-		if err := wc.server.ListenAndServeTLS(cert, key); err != nil {
+		if err := wc.server.ListenAndServe(); err != nil {
 			if err != http.ErrServerClosed {
 				log.Fatal(err)
 			}
