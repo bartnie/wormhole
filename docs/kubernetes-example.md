@@ -274,9 +274,10 @@ We'll go back to the root directory of the project and run it:
     --cert-file certs/connector.pem \
     --key-file certs/connector-key.pem \
     --trust-ca-file certs/ca.pem
+    --http-mode
 ```
 
-The HTTP proxy will run at `https://localhost:8080`, the other end of the HTTP/2 tunnel will be the wormhole-dispatcher, and we tell wormhole-connector to trust our CA.
+The HTTP proxy will run at `https://localhost:8080`, the other end of the HTTP/2 tunnel will be the wormhole-dispatcher, and we tell wormhole-connector to trust our CA. Flag `--http-mode` should be added when it is required to make calls to `wormhole-dispatcher` application using `http` not `https` protocol - useful for developers. 
 
 ## Create a sample Kubernetes service
 
