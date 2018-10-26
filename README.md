@@ -37,7 +37,7 @@ Then you can configure your applications to use `https://localhost:8080` as an H
 
 ## Kubernetes example
 
-For a full example using Kubernetes check the [Kubernetes example](docs/kubernetes-example.md).
+For a full example using Kubernetes check the [Kubernetes example](docs/kubernetes-example.md). 
 
 ## Serf/Raft example
 
