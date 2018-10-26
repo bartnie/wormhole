@@ -56,6 +56,7 @@ var (
 	flagKeyFile               string
 	flagVerbose               bool
 	flagQuiet                 bool
+	flagHttpMode			  bool
 )
 
 // Execute adds all child commands to the root command sets flags appropriately.
@@ -87,6 +88,7 @@ func init() {
 	RootCmd.PersistentFlags().StringVar(&flagKeyFile, "key-file", "connector-key.pem", "Path to the server key file")
 	RootCmd.PersistentFlags().BoolVar(&flagVerbose, "verbose", false, "Enable verbose output")
 	RootCmd.PersistentFlags().BoolVar(&flagQuiet, "quiet", false, "Supress output (except errors)")
+	RootCmd.PersistentFlags().BoolVar(&flagHttpMode, "http-mode", false, "Run server only mode")
 
 	viper.BindPFlag("config", RootCmd.PersistentFlags().Lookup("config"))
 	viper.BindPFlag("kymaServer", RootCmd.PersistentFlags().Lookup("kyma-server"))
@@ -101,6 +103,7 @@ func init() {
 	viper.BindPFlag("insecure", RootCmd.PersistentFlags().Lookup("insecure"))
 	viper.BindPFlag("certFile", RootCmd.PersistentFlags().Lookup("cert-file"))
 	viper.BindPFlag("keyFile", RootCmd.PersistentFlags().Lookup("key-file"))
+	viper.BindPFlag("httpMode", RootCmd.PersistentFlags().Lookup("http-mode"))
 }
 
 // initConfig reads in config file and ENV variables if set.
@@ -146,6 +149,7 @@ func runWormholeConnector(cmd *cobra.Command, args []string) {
 		DataDir:               viper.GetString("dataDir"),
 		TrustCAFile:           viper.GetString("trustCAFile"),
 		Insecure:              viper.GetBool("insecure"),
+		HttpMode:              viper.GetBool("httpMode"),
 	}
 
 	setLogLevel()
@@ -158,7 +162,7 @@ func runWormholeConnector(cmd *cobra.Command, args []string) {
 		log.Fatal(err)
 	}
 
-	w.ListenAndServeTLS(flagCertFile, flagKeyFile)
+	w.ListenAndServe(flagCertFile, flagKeyFile, flagHttpMode)
 
 	if err := w.SetupSerfRaft(); err != nil {
 		log.Fatal(err)

@@ -83,6 +83,7 @@ type WormholeConnectorConfig struct {
 	DataDir               string
 	TrustCAFile           string
 	Insecure              bool
+	HttpMode			  bool
 }
 
 // splitLocalAddr takes a localAddr[:port] address and returns its address and
@@ -499,11 +500,21 @@ func registerHandlers(mux *mux.Router, wc *WormholeConnector) {
 	mux.PathPrefix("/").HandlerFunc(wc.handleOutgoingHTTP)
 }
 
-// ListenAndServeTLS spawns a goroutine that runs http.ListenAndServeTLS.
-func (wc *WormholeConnector) ListenAndServeTLS(cert, key string) {
+// ListenAndServe spawns a goroutine that runs http.ListenAndServe.
+func (wc *WormholeConnector) ListenAndServe(cert, key string, httpMode bool) {
 	go func() {
 		wc.logger.Infof("listening for client requests on %s", wc.server.Addr)
-		if err := wc.server.ListenAndServe(); err != nil {
+		var err error
+
+		if httpMode {
+			wc.logger.Infof("Starting as HTTP server")
+			err = wc.server.ListenAndServe()
+		}else{
+			wc.logger.Infof("Starting as HTTPS server")
+			err = wc.server.ListenAndServeTLS(cert, key)
+		}
+
+		if err != nil {
 			if err != http.ErrServerClosed {
 				log.Fatal(err)
 			}
