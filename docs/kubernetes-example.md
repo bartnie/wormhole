@@ -273,7 +273,7 @@ We'll go back to the root directory of the project and run it:
     --kyma-reverse-tunnel-port 32681 \
     --cert-file certs/connector.pem \
     --key-file certs/connector-key.pem \
-    --trust-ca-file certs/ca.pem
+    --trust-ca-file certs/ca.pem \
     --http-mode
 ```
 
